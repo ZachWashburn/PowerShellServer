@@ -172,12 +172,15 @@ void startup()
     g_pPowershell->SetProcessHandle(GetCurrentProcess(), GetCurrentThread());
     g_pPowershell->RedirectHandles();
     static std::thread t(fnFunc);
+	t.join();
 #else
     if (!g_pPowershell->StartProcess(strPowerShellPath.c_str(), (char*)"\0", true))
         exit(-999);
+	
+	while(true) {Sleep(9999);} // TODO : handle a child process instance closing
 #endif
 
-    t.join();
+    
 }
 
 
